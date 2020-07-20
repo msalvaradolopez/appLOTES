@@ -1,0 +1,414 @@
+<style>
+    .gridStyle {
+        border: 1px solid rgb(212, 212, 212);
+        width: 100%;
+        height: 500px;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1 class="m-0 text-dark">Mov <span class="badge badge-secondary">Listado E/S</span></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-5">
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" ng-submit="consultaMovtosListado()" autocomplete="off">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" name="valorBusqueda" ng-model="valorBusqueda"
+                            placeholder="Buscar artículos" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Fecha</span>
+                            </div>
+                            <input type="date" class="form-control" id="fecha" ng-model="fecha"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <button type="button" class="btn btn-secondary" ng-click="exportF()"
+                        title="Exportar información a excel (.XLS).">Excel</button>
+                    </div>
+                    
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-3">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Mov</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-tag"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Entradas por lotear</span>
+                        <span class="info-box-number">{{resumen.entradas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-truck-moving"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Salidas por surtir</span>
+                        <span class="info-box-number">{{resumen.salidas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <!-- fix for small devices only -->
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-newspaper"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Etiquetas sin imprimir</span>
+                        <span class="info-box-number">{{resumen.etiquetas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-cubes"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Inventarios avance</span>
+                        <span class="info-box-number">{{resumen.articulos}} / {{resumen.totalArticulos}}
+                            Artículos</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="table-responsive"
+            style="overflow: auto; width: 97%; height:75vh; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+            <div class="row">
+                <table id="export"
+                    class="table table-hover table-condensed tabe-bordered row-border display compact nowrap tableStyles">
+                    <thead>
+                        <tr>
+                            <th>Acción</th>
+                            <th>Tipo</th>
+                            <th>Folio</th>
+                            <th>Fecha</th>
+                            <th>Artículo</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Cliente</th>
+                            <th>Vendedor</th>
+                            <th>Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dt-rows ng-repeat="movto in movtosListado">
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        ng-click="abrirEntradaSalida(movto)"
+                                        title="Agregar nuevos lotes al inventario inicial."><i
+                                            class="fas fa-pencil-alt"></i></button>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.DOCUMENTO}}
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.U_SO1_FOLIO}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.FECHA}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.U_SO1_NUMEROARTICULO}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.U_SO1_DESCRIPCION}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:right">
+                                    {{movto.CANTIDADVENTA}}
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.UNIDAD}}
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.SOCIO}}
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.VENDEDOR}}
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ngCellText" style="text-align:left">
+                                    {{movto.USUARIO}}
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div id="listadoSalidas" tabindex="2" role="dialog" aria-hidden="true" class="modal" data-backdrop="false">
+    <div class="modal-dialog modal-lg" style="width: 1200px !important;">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Articulo : {{Articulo}} Nombre : {{Nombre}} Cantidad : {{Cantidad}} {{Unidad}}
+                    Ctd Lotes :
+                    {{ctdLotes}} {{Unidad}}</h4>
+                <!-- <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button> -->
+            </div>
+            <div class="modal-body" style="padding:0px">
+
+                <div class="table-responsive">
+                    <div class="row">
+                        <div class="form-group col-sm-11"
+                            style="overflow: auto; width:300px; height:auto; max-height: 300px; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+                            <table
+                                class="table table-hover table-condensed tabe-bordered row-border display compact nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Lote
+                                        </th>
+                                        <th>
+                                            Ubicacion
+                                        </th>
+                                        <th>
+                                            Existencia
+                                        </th>
+                                        <th>
+                                            Unidad
+                                        </th>
+                                        <th>
+                                            Cantidad
+                                        </th>
+                                        <th>
+                                            Acción
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dt-rows ng-repeat="lote in listadoSalidas">
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                {{lote.IDLOTE}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                {{lote.UBICACION}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:right">
+                                                {{lote.EXISTENCIA}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                {{lote.UNIDAD}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:right">
+                                                <input type="number" class="form-control" id="cantidad" no-border
+                                                    ng-model="lote.CANTIDAD"
+                                                    ng-readonly="lote.ESTATUS == '' || lote.ESTATUS == 'B'">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                <button type="button" class="btn btn-success"
+                                                    ng-click="aceptarSalida(lote)" title="Aceptar Salida"><i
+                                                        class="fas fa-save"></i></button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="" class="btn btn-default"
+                    ng-click="cerrarListadoSalidas()">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="listadoEntradas" tabindex="2" role="dialog" aria-hidden="true" class="modal" data-backdrop="false">
+    <div class="modal-dialog modal-lg" style="width: 1200px !important;">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Articulo : {{Articulo}} Nombre : {{Nombre}} Cantidad : {{Cantidad}} Ctd Lotes :
+                    {{ctdLotes}} </h4>
+                <!-- <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button> -->
+            </div>
+            <div class="modal-body" style="padding:0px">
+
+                <div class="table-responsive">
+                    <div class="row">
+                        <div class="form-group col-sm-11"
+                            style="overflow: auto; width:300px; height:auto; max-height: 400px; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+                            <table
+                                class="table table-hover table-condensed tabe-bordered row-border display compact nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Lote
+                                        </th>
+                                        <th>
+                                            Ubicacion
+                                        </th>
+
+                                        <th>
+                                            Cantidad
+                                        </th>
+                                        <th>
+                                            Acción
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dt-rows ng-repeat="lote in listadoEntradas">
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                {{lote.IDLOTE}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                <select class="form-control" id="ubicacion"
+                                                    ng-options="ubicacion for ubicacion in Ubicaciones"
+                                                    ng-model="lote.UBICACION"
+                                                    ng-disabled="lote.ESTATUS == '' || lote.ESTATUS == 'B'"></select>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="ngCellText" style="text-align:right">
+                                                <input type="number" class="form-control" id="cantidad"
+                                                    ng-model="lote.CANTIDAD"
+                                                    ng-readonly="lote.ESTATUS == '' || lote.ESTATUS == 'B'">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                <button type="button" class="btn btn-secondary"
+                                                    ng-click="editarEntrada(lote)" title="Editar."><i
+                                                        class="fas fa-pencil-alt"></i></button>
+                                                <button type="button" class="btn btn-success"
+                                                    ng-click="aceptarEntrada(lote)" title="Guardar."><i
+                                                        class="fas fa-save"></i></button>
+                                                <button type="button" class="btn btn-danger"
+                                                    ng-click="borrarEntrada(lote)" title="Borrar."><i
+                                                        class="fas fa-trash-alt"></i></button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="" class="btn btn-default"
+                    ng-click="cerrarListadoEntradas()">Cerrar</button>
+                <button type="button" id="addXML" data-dismiss="" class="btn btn-info" ng-click="agregarLote()">
+                    Nuevo Lote
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- DEFAULT: MODAL ALERT-->
+<div id="modal-alert" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

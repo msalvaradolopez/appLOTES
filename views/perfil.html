@@ -1,0 +1,162 @@
+<style>
+    .btn-circle {
+        width: 30px;
+        height: 30px;
+        padding: 6px 0px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.42857;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1 class="m-0 text-dark">Perfiles <span class="badge badge-secondary">Listado</span></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" ng-submit="listadoPerfiles()" autocomplete="off">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" name="valorBusqueda" ng-model="valorBusqueda"
+                            placeholder="Buscar lotes o artículos" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-success btn-circle" ng-click="agregarPerfil()"
+                        title="Agregar nuevo perfil."><i class="fa fa-plus"></i></button>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-3">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Perfiles</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<div class="table-responsive"
+    style="overflow: auto; width: 97%; height:75vh; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+    <div class="row">
+        <table class="table table-hover table-condensed tabe-bordered row-border display compact nowrap tableStyles">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>id Perfil</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dt-rows ng-repeat="perfil in perfilListado">
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <button type="button" class="btn btn-secondary btn-sm" ng-click="editarPerfil(perfil)"
+                                title="Editar."><i class="fas fa-pencil-alt"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" ng-click="aceptarPerfil(perfil)"
+                                title="Guardar."><i class="fas fa-save"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="borrarPerfil(perfil)"
+                                title="Borrar."><i class="fas fa-trash-alt"></i></button>
+                            <button type="button" class="btn btn-secondary btn-sm" ng-click="abrirMenuPerfil(perfil)"
+                                title="Menu."><i class="fa fa-cogs"></i></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <input type="text" class="form-control form-control-sm" ng-model="perfil.IDROL"
+                                ng-readonly="perfil.ESTATUS == '' || perfil.ESTATUS == 'B' || perfil.ESTATUS == 'E'">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <input type="text" class="form-control form-control-sm" ng-model="perfil.NOMBRE"
+                                ng-readonly="perfil.ESTATUS == '' || perfil.ESTATUS == 'B'">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+<div id="listadoMenu" tabindex="2" role="dialog" aria-hidden="true" class="modal" data-backdrop="false">
+    <div class="modal-dialog modal-lg" style="width: 1200px !important;">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Definir menú para el perfil : {{configuraMenu.IDROL}} {{configuraMenu.NOMBRE}}
+                </h4>
+                <!-- <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button> -->
+            </div>
+            <div class="modal-body" style="padding:0px">
+
+                <div class="table-responsive">
+                    <div class="row">
+                        <div class="form-group col-sm-11"
+                            style="overflow: auto; width:300px; height:auto; max-height: 400px; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+                            <table
+                                class="table table-hover table-condensed tabe-bordered row-border display compact nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Menu
+                                        </th>
+                                        <th>
+                                            Acción
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dt-rows ng-repeat="menu in menuListado">
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                <select class="form-control form-control-sm" id="opcion" ng-model="menu.IDMENU"
+                                                    ng-disabled="menu.ESTATUS == '' || menu.ESTATUS == 'B'"
+                                                    ng-change="cambioMenu(menu)">
+                                                    <option value="">--- Seleccione una opción ---</option>
+                                                    <option ng-selected="{{opcion.idMenu == menu.IDMENU}}"
+                                                        ng-repeat="opcion in opcionesMenu" value="{{opcion.idMenu}}">
+                                                        {{opcion.nombre}}</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ngCellText" style="text-align:center">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    ng-click="aceptarPerfilMenu(menu)" title="Guardar."><i
+                                                        class="fas fa-save"></i></button>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    ng-click="borrarPerfilMenu(menu)" title="Borrar."><i
+                                                        class="fas fa-trash-alt"></i></button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="" class="btn btn-default"
+                    ng-click="cerrarMenuPerfil()">Cerrar</button>
+                <button type="button" id="addXML" data-dismiss="" class="btn btn-info" ng-click="agregarMenu()">
+                    Nueva Opción
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

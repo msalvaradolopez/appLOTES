@@ -1,0 +1,104 @@
+<style>
+    .btn-circle {
+        width: 30px;
+        height: 30px;
+        padding: 6px 0px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.42857;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1 class="m-0 text-dark">Usuarios <span class="badge badge-secondary">Listado</span></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" ng-submit="listadoUsuarios()" autocomplete="off">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" name="valorBusqueda" ng-model="valorBusqueda"
+                            placeholder="Buscar lotes o artículos" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-3">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Usuarios</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<div class="table-responsive"
+    style="overflow: auto; width: 97%; height:75vh; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+    <div class="row">
+        <table class="table table-hover table-condensed tabe-bordered row-border display compact nowrap tableStyles">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>Login</th>
+                    <th>Passw</th>
+                    <th>Nombre</th>
+                    <th>Perfil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dt-rows ng-repeat="usuario in usuarioListado">
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <button type="button" class="btn btn-secondary btn-sm" ng-click="editarUsuario(usuario)"
+                                title="Editar."><i class="fas fa-pencil-alt"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" ng-click="aceptarUsuario(usuario)"
+                                title="Guardar."><i class="fas fa-save"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="borrarUsuario(usuario)"
+                                title="Borrar."><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <input type="text" class="form-control form-control-sm" ng-model="usuario.CODE"
+                                ng-readonly="usuario.ESTATUS == '' || usuario.ESTATUS == 'B' || usuario.ESTATUS == 'E'">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <input type="password" class="form-control form-control-sm" ng-model="usuario.PASSW"
+                                ng-readonly="usuario.ESTATUS == '' || usuario.ESTATUS == 'B'">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{usuario.NAME}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <select class="form-control form-control-sm" id="opcion" ng-model="usuario.IDROL"
+                                ng-disabled="usuario.ESTATUS == '' || usuario.ESTATUS == 'B'">
+                                <option value="">--- Seleccione una opción ---</option>
+                                <option ng-selected="{{opcion.IDROL == usuario.IDROL}}"
+                                    ng-repeat="opcion in perfilListado" value="{{opcion.IDROL}}">
+                                    {{opcion.IDROL}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

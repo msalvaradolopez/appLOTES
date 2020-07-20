@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html ng-app="appLotes">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="css/adminlte.min.css">
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" />
+
+    <!-- Bootstrap CSS
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link type="text/css" rel="Stylesheet" href="vendors/ngGrid/ng-grid.min.css" />
+
+    <link rel="stylesheet" href="vendors/Ionicons/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/tablesCSS.css">
+
+    <link rel="stylesheet" href="css/scrolling-nav.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="vendors/fontawesome-free/css/all.min.css">
+
+
+    <link href="css/alertify.core.css" rel="stylesheet" type="text/css" />
+    <link href="css/alertify.default.css" rel="stylesheet" type="text/css" />
+
+    <title>Control de Cables por LOTES</title>
+
+
+</head>
+
+<body id="page-top" ng-controller="ctrlLogin">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar-left" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">ELECTRICO, S.A.</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#about">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#services">Politicas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+
+                <form class="form-inline">
+                    <div class="form-group mx-sm-2">
+                        <label for="inputUser" class="sr-only">User</label>
+                        <input type="text" class="form-control" id="inputUser" placeholder="Usuario" ng-model="usuario">
+                    </div>
+                    <div class="form-group mx-sm-2">
+                        <label for="inputPass" class="sr-only">Password</label>
+                        <input type="password" class="form-control" id="inputPass" placeholder="Contraseña"
+                            ng-model="passw">
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="getLogin()">Acceder</button>
+                </form>
+
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-primary text-white">
+        <div class="container text-center">
+            <h1>LOTES - control de cables por lotes</h1>
+            <p class="lead">aplicación para consulta y mantto de cables por lotes.</p>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>Acerca de este sitio</h2>
+                    <p class="lead">El nuevo Portal de Proveedores QUANTUS es una aplicación web que integra el ciclo de
+                        Facturación contra Ordenes de Compra permitiendo a los proveedores trabajar con información
+                        on-line para el registro de sus facturas así como realizar el seguimiento del estatus de las
+                        mismas.</p>
+                    <ul>
+                        <li>Mayor control para el proveedor ya que contará con información real al día de lo que tiene
+                            pendiente por facturar</li>
+                        <li>Mayor facilidad en el registro de facturas y mayor control sobre que facturas ya fueron
+                            programadas para pago.</li>
+                        <li>Herramienta auxiliar para la administración de la facturación del proveedor.</li>
+                        <li>Consulta en cualquier momento la historia de sus pagos, así como la programación futura de
+                            pago de facturas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>Politicas</h2>
+                    <p class="lead">Conoce nuestra politica de proveedores.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>Contactenos</h2>
+                    <p class="lead">Para mayor informacion favor de contactarnos al tel 8111024337</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Electrico, s.a. 2018-2019</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- DEFAULT: MODAL ALERT-->
+    <div id="modal-alert" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/libs/angular.js"></script>
+
+
+    <script src="js/libs/angular-cookies.js"></script>
+
+
+    <script src="js/libs/angular-route.js"></script>
+
+    <script src="js/libs/angular-ui-router.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+        -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+    <!-- Optional JavaScript 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+        -->
+
+    <script type="text/javascript" src="vendors/ngGrid/ng-grid-2.0.14.min.js"></script>
+
+    <script src="js/alertify.min.js" type="text/javascript"></script>
+
+    <script src="js/scrolling-nav.js" type="text/javascript"></script>
+
+    <!-- AdminLTE App -->
+    <script src="js/adminlte.min.js"></script>
+
+    <!-- Angular App Script -->
+    <script src="scripts/main.js" type="text/javascript"></script>
+    <script src="scripts/factories/fcGeneral.js" type="text/javascript"></script>
+    <script src="scripts/controllers/ctrlLogin.js" type="text/javascript"></script>
+
+</body>
+
+</html>

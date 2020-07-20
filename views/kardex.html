@@ -1,0 +1,184 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1 class="m-0 text-dark">Kardex <span class="badge badge-secondary">Listado Kardex</span></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" ng-submit="listadoKardex()" autocomplete="off">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" name="valorBusqueda" ng-model="valorBusqueda"
+                            placeholder="Buscar lotes o artículos" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Fecha</span>
+                        </div>
+                        <input type="date" class="form-control" id="fecha" ng-model="fecha"
+                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <button type="button" class="btn btn-secondary" ng-click="exportF()"
+                        title="Exportar información a excel (.XLS).">Excel</button>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-3">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Kardex</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<div class="table-responsive"
+    style="overflow: auto; width: 97%; height:75vh; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+    <div class="row">
+        <table id="export" class="table table-hover table-condensed tabe-bordered row-border display compact nowrap tableStyles">
+            <thead>
+                <tr>
+                    <th>Acción</th>
+                    <th>Lote</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Unidad</th>
+                    <th>Ubicación</th>
+                    <th>Tipo</th>
+                    <th>Nombre Tipo</th>
+                    <th>Artículo</th>
+                    <th>Nombre Artículo</th>
+                    <th>Almacén</th>
+                    <th>Folio</th>
+                    <th>Fecha Documento</th>
+                    <th>Fecha Movimiento</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
+                    <th>Usuario R1</th>
+                    <th>Usuario Lotes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dt-rows ng-repeat="kardex in KardexListado">
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            <button type="button" class="btn btn-secondary btn-sm" ng-click="editarLote(kardex)"
+                                title="Editar lote."><i class="fas fa-pencil-alt "></i></button>
+                            <button type="button" class="btn btn-success btn-sm" ng-click="aceptarLote(kardex)"
+                                title="Guardar."><i class="fas fa-save"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="borrarLote(kardex)"
+                                title="Borrar."><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.IDLOTE}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:right; width: 120px">
+                            <input type="number" class="form-control" id="entrada" no-border
+                                                    ng-model="kardex.ENTRADA"
+                                                    ng-readonly="kardex.ESTATUS == '' || kardex.ESTATUS == 'B' ">
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.SALIDA}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.UNIDAD}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left; width: 120px;">
+                            <select class="form-control form-control-sm" id="ubicacion"
+                                ng-options="ubicacion for ubicacion in Ubicaciones" ng-model="kardex.UBICACION"
+                                ng-disabled="kardex.ESTATUS == '' || kardex.ESTATUS == 'B' "></select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.TIPOMOV}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.TIPOMOVNOMBRE}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.U_SO1_NUMEROARTICULO}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.ItemName}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.ALMACEN}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.U_SO1_FOLIO}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.FECHADOC}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.FECHAMOV}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.SOCIO}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.VENDEDOR}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.USUARIO_R1}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{kardex.USERID}}
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

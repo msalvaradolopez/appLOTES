@@ -1,0 +1,102 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1 class="m-0 text-dark">Ventas <span class="badge badge-secondary">Listado</span></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" ng-submit="listadoVentas()" autocomplete="off">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" name="valorBusqueda" ng-model="valorBusqueda"
+                            placeholder="Buscar lotes o artículos" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+
+                        <button type="button" class="btn btn-secondary" ng-click="exportF()"
+                            title="Exportar información a excel (.XLS).">Excel</button>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-3">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Ventas</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<div class="table-responsive"
+    style="overflow: auto; width: 97%; height:75vh; border: 1px solid #990000; margin: 20px 20px 20px 20px ;">
+    <div class="row">
+        <table id= "export" class="table table-hover table-condensed tabe-bordered row-border display compact nowrap tableStyles">
+            <thead>
+                <tr>
+                    <th>Lote</th>
+                    <th>Ubicación</th>
+                    <th>Existencia</th>
+                    <th>Artículo</th>
+                    <th>Nombre Artículo</th>
+                    <th>Almacén</th>
+                    <th>Tipo</th>
+                    <th>Nombre Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dt-rows ng-repeat="lote in ventasListado">
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.IDLOTE}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.UBICACION}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.EXISTENCIA}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.U_SO1_NUMEROARTICULO}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.ItemName}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.ALMACEN}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.TIPOMOV}}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="ngCellText" style="text-align:left">
+                            {{lote.TIPOMOVNOMBRE}}
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table i>
+    </div>
+</div>

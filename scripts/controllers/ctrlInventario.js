@@ -185,7 +185,11 @@ angular.module("appLotes")
                 var acumCantidades = 0;
 
                 $scope.listadoLotes.forEach(lote => {
-                    acumCantidades = acumCantidades + lote.CANTIDAD;
+                    if (lote.EXISTENCIA > 0 )
+                        acumCantidades = acumCantidades + (lote.EXISTENCIA);
+                    
+                    if (lote.ESTATUS == "N" || lote.ESTATUS == "E" )
+                        acumCantidades = acumCantidades + (lote.CANTIDAD);
                 });
 
                 acumCantidades = parseFloat(acumCantidades).toFixed(2);

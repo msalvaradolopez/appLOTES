@@ -20,7 +20,7 @@ angular.module("appLotes")
             $scope.listadoKardex = function () {
                 var params = {};
                 params.valorBuscar = $scope.valorBusqueda;
-                params.fecha = $filter('date')($scope.fecha, 'dd/MM/yyyy');
+                params.fecha = $filter('date')($scope.fecha, 'yyyy-MM-dd');
 
                 fcGeneral.custom("getKardex", params)
                     .success(function (data, status) {

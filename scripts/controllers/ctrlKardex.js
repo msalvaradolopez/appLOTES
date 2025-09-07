@@ -16,11 +16,18 @@ angular.module("appLotes")
             $scope.tiposEntradas = ["10", "DE", "EP", "EX", "FP", "EM", "RP", "E"];
 
             $scope.ctdAux = 0;
+			
+			$scope.formatDate = function (date) { 
+				let year = date.getFullYear(); 
+				let month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+				let day = date.getDate().toString().padStart(2, '0'); 
+				return `${year}-${month}-${day}`;
+			}
 
             $scope.listadoKardex = function () {
                 var params = {};
                 params.valorBuscar = $scope.valorBusqueda;
-                params.fecha = $filter('date')($scope.fecha, 'yyyy-MM-dd');
+                params.fecha = $scope.formatDate($scope.fecha);
 
                 fcGeneral.custom("getKardex", params)
                     .success(function (data, status) {

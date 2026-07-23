@@ -15,7 +15,8 @@ angular.module("appLotes")
             { orden: 4, idMenu: "inventario", nombre: "Inventario" },
             { orden: 5, idMenu: "etiquetas", nombre: "Etiquetas" },
             { orden: 6, idMenu: "perfil", nombre: "Perfiles" },
-            { orden: 7, idMenu: "usuarios", nombre: "Usuarios" }];
+            { orden: 7, idMenu: "usuarios", nombre: "Usuarios" },
+            { orden: 8, idMenu: "cortes", nombre: "Cortes del Día" }];
 
             $scope.perfil = {
                 IDROL: "",

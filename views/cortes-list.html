@@ -134,9 +134,12 @@
                                 <th>Folio</th>
                                 <th>Fecha / Hora</th>
                                 <th>Tipo</th>
-                                <th>Usuario</th>
                                 <th>Cantidad</th>
-                                <th>Estatus</th>
+                                <th>Existencia</th>
+                                <th>Ubicación</th>
+                                <th>Usuario</th>
+                                <th>Almacén</th>
+                                <th>Socio</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,9 +152,12 @@
                                         {{c.TipoSalida}}
                                     </span>
                                 </td>
-                                <td>{{c.Usuario}}</td>
                                 <td style="text-align:right;">{{c.Cantidad | number:2}}</td>
-                                <td><span class="badge badge-success">{{c.Estatus}}</span></td>
+                                <td style="text-align:right;">{{c.Existencia | number:2}}</td>
+                                <td>{{c.Ubicacion}}</td>
+                                <td>{{c.Usuario}}</td>
+                                <td>{{c.Almacen}}</td>
+                                <td>{{c.Socio}}</td>
                             </tr>
                         </tbody>
                     </table>

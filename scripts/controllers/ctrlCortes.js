@@ -59,8 +59,8 @@ angular.module("appLotes")
                 $scope.hasData = false;
 
                 var params = {
-                    fechaInicio: $filter('date')($scope.fechaInicio, 'dd/MM/yyyy'),
-                    fechaFin: $filter('date')($scope.fechaFin, 'dd/MM/yyyy'),
+                    fechaInicio: $filter('date')($scope.fechaInicio, 'yyyy-MM-dd'),
+                    fechaFin: $filter('date')($scope.fechaFin, 'yyyy-MM-dd'),
                     tiposSalida: $scope.getTiposActivos(),
                     pageNumber: $scope.pagination.pageNumber,
                     pageSize: $scope.pagination.pageSize,

@@ -1,6 +1,6 @@
 angular.module("appLotes")
-    .controller('ctrlCortes', ['$scope', '$http', 'fcCortes', '$q', '$location', '$state', '$stateParams', '$filter',
-        function ($scope, $http, fcCortes, $q, $location, $state, $stateParams, $filter) {
+    .controller('ctrlCortes', ['$scope', '$http', '$q', '$location', '$state', '$stateParams', '$filter',
+        function ($scope, $http, $q, $location, $state, $stateParams, $filter) {
 
             $scope.loading = false;
             $scope.hasData = false;
@@ -67,7 +67,8 @@ angular.module("appLotes")
                     searchTerm: $scope.searchTerm || ''
                 };
 
-                fcCortes.getCortesDelDia(params)
+                var wsURL = 'http://localhost/lotesAPI/api/v1/cortes/dia';
+                $http.get(wsURL, { params: params })
                     .success(function (response) {
                         $scope.loading = false;
                         if (response.success && response.data) {

@@ -1,6 +1,6 @@
 angular.module("appLotes")
-    .controller('ctrlCortes', ['$scope', '$http', '$filter',
-        function ($scope, $http, $filter) {
+    .controller('ctrlCortes', ['$scope', 'fcGeneral', '$filter',
+        function ($scope, fcGeneral, $filter) {
 
             $scope.loading = false;
             $scope.hasData = false;
@@ -67,8 +67,7 @@ angular.module("appLotes")
                     searchTerm: $scope.searchTerm || ''
                 };
 
-                var wsURL = 'http://localhost/lotesAPI/api/v1/cortes/dia';
-                $http.get(wsURL, { params: params })
+                fcGeneral.customUrl('/api/v1/cortes/dia', params)
                     .success(function (response) {
                         $scope.loading = false;
                         if (response.Success && response.Data) {

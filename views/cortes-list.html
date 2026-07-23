@@ -1,0 +1,219 @@
+<style>
+    .gridCortes {
+        border: 1px solid rgb(212, 212, 212);
+        width: 100%;
+        height: 500px;
+    }
+    .badge-tipo {
+        font-size: 0.85em;
+        padding: 4px 8px;
+    }
+    .filtro-tipo-chip {
+        display: inline-block;
+        margin: 2px 4px;
+        cursor: pointer;
+        user-select: none;
+    }
+    .filtro-tipo-chip.active {
+        opacity: 1;
+    }
+    .filtro-tipo-chip.inactive {
+        opacity: 0.5;
+    }
+    .resumen-pie {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        padding: 8px 12px;
+        border-top: 2px solid #dee2e6;
+    }
+    .pagination-custom {
+        margin: 0;
+    }
+    .pagination-custom li a {
+        cursor: pointer;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Cortes del Día <span class="badge badge-info">Consulta</span></h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active">Cortes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- Filtros -->
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-filter"></i> Filtros</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fecha Inicio</label>
+                            <input type="date" class="form-control form-control-sm" ng-model="fechaInicio">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fecha Fin</label>
+                            <input type="date" class="form-control form-control-sm" ng-model="fechaFin">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Búsqueda</label>
+                            <input type="text" class="form-control form-control-sm" ng-model="searchTerm"
+                                placeholder="Folio, tipo, usuario...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div>
+                                <button class="btn btn-sm btn-info" ng-click="consultarCortes()" ng-disabled="loading">
+                                    <i class="fas fa-search"></i> Consultar
+                                </button>
+                                <button class="btn btn-sm btn-default" ng-click="limpiarFiltros()">
+                                    <i class="fas fa-undo"></i> Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Tipos de Salida:</label>
+                        <div>
+                            <span class="filtro-tipo-chip badge badge-{{t.color}}"
+                                ng-class="{active: tiposSeleccionados[t.id], inactive: !tiposSeleccionados[t.id]}"
+                                ng-repeat="t in tiposDisponibles"
+                                ng-click="tiposSeleccionados[t.id] = !tiposSeleccionados[t.id]">
+                                {{t.label}} - {{t.desc}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div ng-if="loading" class="text-center p-4">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p class="mt-2">Consultando cortes del día...</p>
+        </div>
+
+        <!-- Error -->
+        <div ng-if="errorMessage" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <i class="fas fa-exclamation-triangle"></i> {{errorMessage}}
+        </div>
+
+        <!-- Tabla -->
+        <div ng-if="!loading && hasData" class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive" style="overflow: auto; width: 100%;">
+                    <table class="table table-hover table-condensed table-bordered table-striped tableStyles" style="margin: 0;">
+                        <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Fecha / Hora</th>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Sucursal</th>
+                                <th>Usuario</th>
+                                <th>Importe</th>
+                                <th>Estatus</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="c in cortesListado">
+                                <td>{{c.Folio}}</td>
+                                <td>{{c.FechaHora}}</td>
+                                <td>
+                                    <span class="badge badge-{{getColorTipo(c.TipoSalida)}} badge-tipo">
+                                        {{c.TipoSalida}}
+                                    </span>
+                                </td>
+                                <td>{{c.TipoDescripcion}}</td>
+                                <td>{{c.Sucursal || '-'}}</td>
+                                <td>{{c.Usuario}}</td>
+                                <td style="text-align:right;">$ {{c.ImporteTotal | number:2}}</td>
+                                <td><span class="badge badge-success">{{c.Estatus}}</span></td>
+                                <td>
+                                    <button class="btn btn-info btn-xs" ng-click="verDetalle(c)" title="Ver detalle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pie: Totales y Paginación -->
+            <div class="card-footer p-2">
+                <div class="row">
+                    <div class="col-md-4 resumen-pie">
+                        Mostrando {{cortesListado.length}} de {{pagination.totalRecords | number:0}} registros
+                        <span ng-if="cortesListado.length > 0">
+                            | Total: <span style="color:#c0392b;">$ {{totalImporte | number:2}}</span>
+                        </span>
+                    </div>
+                    <div class="col-md-8 text-right">
+                        <nav>
+                            <ul class="pagination pagination-sm pagination-custom justify-content-end">
+                                <li class="page-item" ng-class="{disabled: pagination.pageNumber <= 1}">
+                                    <a class="page-link" ng-click="cambiarPagina(1)">&laquo;</a>
+                                </li>
+                                <li class="page-item" ng-class="{disabled: pagination.pageNumber <= 1}">
+                                    <a class="page-link" ng-click="cambiarPagina(pagination.pageNumber - 1)">&lsaquo;</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Pág. {{pagination.pageNumber}} / {{pagination.totalPages}}</a>
+                                </li>
+                                <li class="page-item" ng-class="{disabled: pagination.pageNumber >= pagination.totalPages}">
+                                    <a class="page-link" ng-click="cambiarPagina(pagination.pageNumber + 1)">&rsaquo;</a>
+                                </li>
+                                <li class="page-item" ng-class="{disabled: pagination.pageNumber >= pagination.totalPages}">
+                                    <a class="page-link" ng-click="cambiarPagina(pagination.totalPages)">&raquo;</a>
+                                </li>
+                                <li class="page-item ml-2">
+                                    <select class="form-control form-control-sm" ng-model="pagination.pageSize"
+                                        ng-change="cambioPageSize()" ng-options="s for s in pageSizeOptions"
+                                        style="width: auto; display: inline-block;"></select>
+                                </li>
+                                <li class="page-item ml-2">
+                                    <input type="number" class="form-control form-control-sm" ng-model="irPaginaNum"
+                                        placeholder="Ir a pág." style="width: 90px; display: inline-block;"
+                                        ng-keypress="$event.keyCode === 13 && irPagina()">
+                                    <button class="btn btn-sm btn-outline-secondary" ng-click="irPagina()">Ir</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sin datos -->
+        <div ng-if="!loading && !hasData && !errorMessage" class="text-center p-4">
+            <i class="fas fa-inbox fa-3x text-muted"></i>
+            <p class="mt-2 text-muted">No se encontraron cortes para los filtros seleccionados.</p>
+        </div>
+    </div>
+</section>

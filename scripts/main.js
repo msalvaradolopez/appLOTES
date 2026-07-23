@@ -46,11 +46,18 @@ App.config(function ($stateProvider) {
             templateUrl: 'views/perfil.html',
             controller: 'ctrlPerfil',
             id_menu: 'perfil'
-        }).state('usuarios', {
+        })
+        .state('usuarios', {
             url: "/usuarios",
             templateUrl: 'views/usuarios.html',
             controller: 'ctrlUsuarios',
             id_menu: 'usuarios'
+        })
+        .state('cortes', {
+            url: "/cortes",
+            templateUrl: 'views/cortes-list.html',
+            controller: 'ctrlCortes',
+            id_menu: 'cortes'
         })
 });
 

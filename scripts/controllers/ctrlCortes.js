@@ -71,12 +71,12 @@ angular.module("appLotes")
                 $http.get(wsURL, { params: params })
                     .success(function (response) {
                         $scope.loading = false;
-                        if (response.success && response.data) {
-                            var d = response.data;
-                            $scope.cortesListado = d.data || [];
-                            $scope.pagination.totalRecords = d.totalRecords;
-                            $scope.pagination.totalPages = d.totalPages;
-                            $scope.pagination.pageNumber = d.pageNumber;
+                        if (response.Success && response.Data) {
+                            var d = response.Data;
+                            $scope.cortesListado = d.Data || [];
+                            $scope.pagination.totalRecords = d.TotalRecords;
+                            $scope.pagination.totalPages = d.TotalPages;
+                            $scope.pagination.pageNumber = d.PageNumber;
                             $scope.hasData = $scope.cortesListado.length > 0;
 
                             $scope.totalImporte = 0;
@@ -84,7 +84,7 @@ angular.module("appLotes")
                                 $scope.totalImporte += item.ImporteTotal;
                             });
                         } else {
-                            $scope.errorMessage = response.message || 'Error al consultar cortes.';
+                            $scope.errorMessage = response.Message || 'Error al consultar cortes.';
                         }
                     })
                     .error(function (data, status) {

@@ -1,6 +1,6 @@
 angular.module("appLotes")
-    .controller('ctrlCortes', ['$scope', '$http', '$q', '$location', '$state', '$stateParams', '$filter',
-        function ($scope, $http, $q, $location, $state, $stateParams, $filter) {
+    .controller('ctrlCortes', ['$scope', '$http', '$filter',
+        function ($scope, $http, $filter) {
 
             $scope.loading = false;
             $scope.hasData = false;
@@ -32,7 +32,7 @@ angular.module("appLotes")
             };
             $scope.pageSizeOptions = [10, 20, 50, 100, 200];
             $scope.cortesListado = [];
-            $scope.totalImporte = 0;
+            $scope.totalCantidad = 0;
 
             $scope.getColorTipo = function(tipo) {
                 var found = $scope.tiposDisponibles.find(function(t) { return t.id === tipo; });
@@ -79,9 +79,9 @@ angular.module("appLotes")
                             $scope.pagination.pageNumber = d.PageNumber;
                             $scope.hasData = $scope.cortesListado.length > 0;
 
-                            $scope.totalImporte = 0;
+                            $scope.totalCantidad = 0;
                             $scope.cortesListado.forEach(function(item) {
-                                $scope.totalImporte += item.ImporteTotal;
+                                $scope.totalCantidad += item.Cantidad;
                             });
                         } else {
                             $scope.errorMessage = response.Message || 'Error al consultar cortes.';
@@ -119,12 +119,6 @@ angular.module("appLotes")
                     $scope.consultarCortes();
                     $scope.irPaginaNum = null;
                 }
-            };
-
-            $scope.verDetalle = function(corte) {
-                alertify.alert('Corte: ' + corte.Folio + '<br>Tipo: ' + corte.TipoSalida +
-                    '<br>Fecha: ' + corte.FechaHora + '<br>Usuario: ' + corte.Usuario +
-                    '<br>Total: $' + corte.ImporteTotal.toFixed(2));
             };
 
             $scope.consultarCortes();

@@ -230,6 +230,18 @@ angular.module("appLotes")
                 $('#listadoEntradas').modal("hide");
             }
 
+            function parseRespuestaSalida(data) {
+                if (data === null || data === undefined) { return {}; }
+                if (typeof data === 'string') {
+                    try {
+                        return jQuery.parseJSON(data);
+                    } catch (e) {
+                        return { codigo: -1, mensaje: data };
+                    }
+                }
+                return data; // Ya es un objeto (p. ej. HTTP 400 con JSON).
+            }
+
             $scope.aceptarSalida = function (salida) {
 
 
@@ -262,15 +274,21 @@ angular.module("appLotes")
 
                 fcGeneral.custom("setMovtoSalida", salida)
                     .success(function (data, status) {
-                        var obj = jQuery.parseJSON(data);
+                        var obj = parseRespuestaSalida(data);
                         $scope.valorRetorno = obj;
 
-                        alertify.success($scope.valorRetorno.mensaje);
+                        if (obj.codigo == -1) {
+                            alertify.error(obj.mensaje);
+                            return;
+                        }
+
+                        alertify.success(obj.mensaje);
                         $scope.consultaListadoSalidas(salida);
 
                     })
                     .error(function (data, status) {
-                        alertify.error(data.mensaje);
+                        var obj = parseRespuestaSalida(data);
+                        alertify.error(obj.mensaje || "Ocurrió un error al registrar la salida.");
 
                     });
 
@@ -369,15 +387,21 @@ angular.module("appLotes")
 
                 fcGeneral.custom("setMovLoteEntrada", entrada)
                     .success(function (data, status) {
-                        var obj = jQuery.parseJSON(data);
+                        var obj = parseRespuestaSalida(data);
                         $scope.valorRetorno = obj;
 
-                        alertify.success($scope.valorRetorno.mensaje);
+                        if (obj.codigo == -1) {
+                            alertify.error(obj.mensaje);
+                            return;
+                        }
+
+                        alertify.success(obj.mensaje);
                         $scope.consultaListadoEntradas(entrada);
 
                     })
                     .error(function (data, status) {
-                        alertify.error(data);
+                        var obj = parseRespuestaSalida(data);
+                        alertify.error(obj.mensaje || "Ocurrió un error al registrar la entrada.");
 
                     });
 
@@ -430,14 +454,20 @@ angular.module("appLotes")
 
                 fcGeneral.custom("delLoteEntrada", lote)
                     .success(function (data, status) {
-                        var obj = jQuery.parseJSON(data);
+                        var obj = parseRespuestaSalida(data);
                         $scope.valorRetorno = obj;
 
-                        alertify.success($scope.valorRetorno.mensaje);
+                        if (obj.codigo == -1) {
+                            alertify.error(obj.mensaje);
+                            return;
+                        }
+
+                        alertify.success(obj.mensaje);
                         $scope.consultaListadoEntradas(lote);
                     })
                     .error(function (data, status) {
-                        console.log(data.mensaje);
+                        var obj = parseRespuestaSalida(data);
+                        alertify.error(obj.mensaje || "Ocurrió un error al eliminar la entrada.");
 
                     });
 
